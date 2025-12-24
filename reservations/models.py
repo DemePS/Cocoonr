@@ -86,7 +86,7 @@ class Reservation(models.Model):
             )
         
         # Affiche des périodes de réservation existantes
-        chevauchements = self.chevauchements(date_arrivee, date_depart)
+        chevauchements = self.chevauchements(self.date_arrivee, self.date_depart)
         
         chevauchements_dates = chevauchements.values_list('date_arrivee', 'date_depart')
         
