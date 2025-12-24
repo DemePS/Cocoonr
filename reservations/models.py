@@ -77,7 +77,7 @@ class Reservation(models.Model):
             ]
             raise ValidationError(
                 "Ce logement est déjà réservé pour la période demandée. "
-                f"Périodes de réservation existantes :\n" + "\n".join(periodes)
+                f"Veuillez choisir une période en dehors de celles-ci :\n" + "\n".join(periodes)
             )
     
     def save(self, *args, **kwargs):
