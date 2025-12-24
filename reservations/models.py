@@ -10,7 +10,7 @@ class Logement(models.Model):
 
     def __str__(self):
         return f"{self.nom} (jusqu'à {self.capacite} personnes)"
-        
+
     def est_occupe(self, date_arrivee, date_depart):
         """
         Vérifie si le logement est déjà réservé pour les dates données.
@@ -44,6 +44,31 @@ class Reservation(models.Model):
     
     def __str__(self):
         return f"Réservation de {self.nom_client} du {self.date_arrivee} au {self.date_depart}"
+
+    def chevauchements(self, date_arrivee, date_depart):
+        """
+        Retourne les réservations qui chevauchent la période donnée.
+        """
+        reservations = Reservation.objects.filter(
+            logement=self.logement
+        ).exclude(pk=self.pk).filter(
+            Q(date_arrivee__lte=self.date_depart, date_depart__gte=self.date_arrivee)
+        )       
+        return reservations
+
+    def est_disponible(self, date_arrivee, date_depart):
+        """
+        Vérifie si le logement est disponible pour les dates données.
+        Retourne True si le logement est disponible, False sinon.
+        """
+        chevauchements = self.chevauchements(date_arrivee, date_depart)
+
+        if chevauchements.exists():
+            return False
+        else:
+            return True
+        
+        
     
     def clean(self):
         """Valide les données de la réservation avant l'enregistrement."""
@@ -60,12 +85,8 @@ class Reservation(models.Model):
                 f"la capacité du logement ({self.logement.capacite} personnes)."
             )
         
-        # Vérification des chevauchements
-        chevauchements = Reservation.objects.filter(
-            logement=self.logement
-        ).exclude(pk=self.pk).filter(
-            Q(date_arrivee__lte=self.date_depart, date_depart__gte=self.date_arrivee)
-        )
+        # Affiche des périodes de réservation existantes
+        chevauchements = self.chevauchements(date_arrivee, date_depart)
         
         chevauchements_dates = chevauchements.values_list('date_arrivee', 'date_depart')
         
