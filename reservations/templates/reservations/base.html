@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Réservations Cocoonr{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'reservations/css/forms.css' %}">
+</head>
+<body class="bg-gray-100">
+    <nav class="bg-blue-600 text-white p-4 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="{% url 'reservations:home' %}" class="text-2xl font-bold">Cocoonr Booking</a>
+            <div class="space-x-4">
+                <a href="{% url 'reservations:logement-list' %}" class="hover:bg-blue-700 px-3 py-2 rounded">
+                    <i class="fas fa-home mr-1"></i> Logements
+                </a>
+                <a href="{% url 'reservations:reservation-list' %}" class="hover:bg-blue-700 px-3 py-2 rounded">
+                    <i class="fas fa-calendar-alt mr-1"></i> Réservations
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto p-4">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer class="bg-gray-800 text-white p-4 mt-8">
+        <div class="container mx-auto text-center">
+         <p>&copy; {% now "Y" %} DemePS. Tous droits réservés.</p> 
+        </div>
+    </footer>
+</body>
+</html>
