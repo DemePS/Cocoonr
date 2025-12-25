@@ -17,22 +17,6 @@ Le modèle `Reservation` représente une réservation de logement avec les champ
 - `nom_client` : Nom du client (CharField, max 255 caractères)
 - `nb_voyageurs` : Nombre de personnes (PositiveIntegerField)
 
-## Prévention des Chevauchements de Réservations
-
-La méthode `est_periode_disponible` permet de vérifier si un logement est disponible pour une période donnée en évitant les chevauchements de réservations. Voici comment elle fonctionne :
-
-1. **Vérification des dates** : Elle s'assure que la date de départ est postérieure à la date d'arrivée.
-
-2. **Recherche de chevauchements** : Elle recherche toutes les réservations existantes pour le logement qui pourraient chevaucher la période demandée en utilisant la condition :
-   ```python
-   date_arrivee__lte=date_depart  # La date d'arrivée est avant ou égale à la date de départ demandée
-   date_depart__gte=date_arrivee  # ET la date de départ est après ou égale à la date d'arrivée demandée
-   ```
-
-3. **Gestion des mises à jour** : Si un `reservation_id` est fourni (cas d'une mise à jour), elle exclut cette réservation de la recherche pour éviter un conflit avec elle-même.
-
-4. **Retour du résultat** : Retourne `True` si aucune réservation ne chevauche la période, `False` sinon.
-
 ## Installation
 
 1. **Cloner le dépôt** :
