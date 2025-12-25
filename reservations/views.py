@@ -17,10 +17,7 @@ class LogementListView(ListView):
     template_name = 'reservations/logement_list.html'
     context_object_name = 'logements'
     
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['form'] = LogementForm()
-        return context
+
 
 
 class LogementCreateView(CreateView):
@@ -51,17 +48,18 @@ class ReservationListView(ListView):
         return Reservation.objects.select_related('logement').all()
 
 
-class ReservationCreateView(FormView):
+class ReservationCreateView(CreateView):
     """Vue pour créer une nouvelle réservation."""
-    template_name = 'reservations/reservation_form.html'
+    model = Reservation
     form_class = ReservationForm
+    template_name = 'reservations/reservation_form.html'
     success_url = reverse_lazy('reservations:reservation-list')
 
     def form_valid(self, form):
         """Traitement du formulaire valide."""
-        form.save()
+        response = super().form_valid(form)
         messages.success(self.request, 'La réservation a été créée avec succès !')
-        return super().form_valid(form)
+        return response
     
     def get_context_data(self, **kwargs):
         """Ajoute des données supplémentaires au contexte du template."""
