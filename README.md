@@ -6,16 +6,16 @@ Application de gestion de réservations de logements.
 
 ### Logement
 Le modèle `Logement` représente un logement disponible à la location avec les champs suivants :
-- `nom` : Nom unique du logement 
-- `capacite` : Nombre maximum de personnes que peut accueillir le logement 
+- `nom` 
+- `capacite`  
 
 ### Réservation
 Le modèle `Reservation` représente une réservation de logement avec les champs suivants :
-- `logement` : Clé étrangère vers le modèle Logement (relation plusieurs-à-un)
-- `date_arrivee` : Date d'arrivée du séjour 
-- `date_depart` : Date de départ 
-- `nom_client` : Nom du client 
-- `nb_voyageurs` : Nombre de personnes 
+- `logement`  
+- `date_arrivee` 
+- `date_depart` 
+- `nom_client`  
+- `nb_voyageurs`
 
 ## Installation
 
@@ -27,7 +27,7 @@ Le modèle `Reservation` représente une réservation de logement avec les champ
 
 2. **Créer un environnement virtuel** (recommandé) :
    ```bash
-   python uv venv
+   uv venv
    source venv/bin/activate  # Sur Linux/Mac
    # OU
    .\venv\Scripts\activate  # Sur Windows
