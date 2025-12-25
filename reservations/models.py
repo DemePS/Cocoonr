@@ -17,8 +17,8 @@ class Logement(models.Model):
         Retourne True si le logement est occupé, False sinon.
         """
         return self.reservations.filter(
-            Q(date_arrivee__lt=date_depart) & 
-            Q(date_depart__gt=date_arrivee)
+            Q(date_arrivee__lte=date_depart) & 
+            Q(date_depart__gte=date_arrivee)
             ).exists()
 
 
@@ -36,6 +36,7 @@ class Reservation(models.Model):
     date_depart = models.DateField(verbose_name="Date de départ")
     nom_client = models.CharField(max_length=255, verbose_name="Nom du client")
     nb_voyageurs = models.PositiveIntegerField(verbose_name="Nombre de voyageurs")
+
     
     class Meta:
         ordering = ['date_arrivee']
@@ -85,30 +86,4 @@ class Reservation(models.Model):
         self.full_clean()
         super().save(*args, **kwargs)
     
-    @classmethod
-    def est_periode_disponible(cls, logement, date_arrivee, date_depart, reservation_id=None):
-        """
-        Vérifie si un logement est disponible pour une période donnée.
-        
-        Args:
-            logement: Instance de Logement
-            date_arrivee: Date d'arrivée
-            date_depart: Date de départ
-            reservation_id: ID de la réservation en cours de modification (optionnel)
-            
-        Returns:
-            bool: True si la période est disponible, False sinon
-        """
-        if date_depart <= date_arrivee:
-            return False
-            
-        queryset = cls.objects.filter(
-            logement=logement,
-            date_arrivee__lte=date_depart,
-            date_depart__gte=date_arrivee
-        )
-        
-        if reservation_id is not None:
-            queryset = queryset.exclude(pk=reservation_id)
-            
-        return not queryset.exists()
+    

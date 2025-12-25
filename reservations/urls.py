@@ -15,7 +15,7 @@ urlpatterns = [
     
     # Vues HTML
     path('logements/', LogementListCreateView.as_view(), name='logement-list'),
-    path('logements/create/', CreateLogementView.as_view(), name='logement-create'),
+    path('logements/nouveau/', CreateLogementView.as_view(), name='logement-create'),
     path('reservations/', ReservationListCreateView.as_view(), name='reservation-list'),
-    path('reservations/create/', CreateReservationView.as_view(), name='reservation-create'),
+    path('reservations/nouvelle/', CreateReservationView.as_view(), name='reservation-create'),
 ]
