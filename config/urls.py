@@ -8,9 +8,6 @@ from django.views.generic import RedirectView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('reservations.urls')),  # URLs principales
-    path('api/', include([
-        path('', include('reservations.api_urls')),  # URLs API
-        #path('docs/', include_docs_urls(title='API de Réservation', public=False)),
-    ])),
+    path('', include('reservations.urls')),  # URLs principales  
+    
 ]

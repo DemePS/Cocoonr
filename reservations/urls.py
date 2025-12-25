@@ -1,10 +1,10 @@
 from django.urls import path
 from .views import (
     HomeView, 
-    LogementListCreateView, 
-    ReservationListCreateView,
-    CreateReservationView,
-    CreateLogementView
+    LogementListView,
+    LogementCreateView,
+    ReservationListView,
+    ReservationCreateView
 )
 
 app_name = 'reservations'
@@ -14,8 +14,8 @@ urlpatterns = [
     path('', HomeView.as_view(), name='home'),
     
     # Vues HTML
-    path('logements/', LogementListCreateView.as_view(), name='logement-list'),
-    path('logements/nouveau/', CreateLogementView.as_view(), name='logement-create'),
-    path('reservations/', ReservationListCreateView.as_view(), name='reservation-list'),
-    path('reservations/nouvelle/', CreateReservationView.as_view(), name='reservation-create'),
+    path('logements/', LogementListView.as_view(), name='logement-list'),
+    path('logements/nouveau/', LogementCreateView.as_view(), name='logement-create'),
+    path('reservations/', ReservationListView.as_view(), name='reservation-list'),
+    path('reservations/nouvelle/', ReservationCreateView.as_view(), name='reservation-create'),
 ]

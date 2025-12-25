@@ -1,158 +1,146 @@
 {% extends 'reservations/base.html' %}
 
 {% block content %}
-<div class="container mx-auto px-4 py-8">
-    <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-6">
-        <h1 class="text-2xl font-bold text-gray-800 mb-6">
-            <i class="fas fa-calendar-plus text-blue-500 mr-2"></i>
-            Nouvelle réservation
-        </h1>
+<div class="form-container">
+    <h1 class="form-title">
+        <i class="fas fa-calendar-plus"></i>
+        Nouvelle réservation
+    </h1>
+    
+    {% if form.non_field_errors %}
+        <div class="alert alert-error">
+            <i class="fas fa-exclamation-circle"></i>
+            {% for error in form.non_field_errors %}
+                {{ error }}
+            {% endfor %}
+        </div>
+    {% endif %}
+    
+    <form method="post">
+        {% csrf_token %}
         
-        <!-- Affichage des erreurs non liées à un champ spécifique -->
-        {% if form.non_field_errors %}
-            <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded">
-                <div class="flex">
-                    <div class="flex-shrink-0">
-                        <i class="fas fa-exclamation-circle text-red-500 mt-1"></i>
-                    </div>
-                    <div class="ml-3">
-                        <p class="text-sm text-red-700">
-                            {% for error in form.non_field_errors %}
-                                {{ error }}
-                            {% endfor %}
-                        </p>
-                    </div>
-                </div>
-            </div>
-        {% endif %}
-        
-        <form method="post" class="space-y-6">
-            {% csrf_token %}
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Champ Nom du client -->
-                <div class="md:col-span-2">
-                    <label for="{{ form.nom_client.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
-                        {{ form.nom_client.label }}
-                        <span class="text-red-500">*</span>
-                    </label>
-                    <input type="text"
-                           name="{{ form.nom_client.name }}"
-                           id="{{ form.nom_client.id_for_label }}"
-                           class="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm {% if form.nom_client.errors %}border-red-500{% else %}border-gray-300{% endif %}"
-                           value="{{ form.nom_client.value|default:'' }}"
-                           required>
-                    {% if form.nom_client.errors %}
-                        <div class="mt-1 text-sm text-red-600">
-                            {% for error in form.nom_client.errors %}
-                                <p>{{ error }}</p>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                </div>
-                
-                <!-- Champ Logement -->
-                <div class="md:col-span-2">
-                    <label for="{{ form.logement.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
-                        {{ form.logement.label }}
-                        <span class="text-red-500">*</span>
-                    </label>
-                    <select name="{{ form.logement.name }}"
-                            id="{{ form.logement.id_for_label }}"
-                            class="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm {% if form.logement.errors %}border-red-500{% else %}border-gray-300{% endif %}"
-                            required>
-                        <option value="" disabled selected>Sélectionnez un logement</option>
-                        {% for value, label in form.logement.field.choices %}
-                            <option value="{{ value }}" {% if form.logement.value == value|stringformat:'s' %}selected{% endif %}>
-                                {{ label }}
-                            </option>
+        <div class="form-grid">
+            <!-- Champ Nom du client -->
+            <div class="form-group full-width">
+                <label for="{{ form.nom_client.id_for_label }}" class="form-label">
+                    {{ form.nom_client.label }}
+                    <span class="form-required">*</span>
+                </label>
+                <input type="text"
+                       name="{{ form.nom_client.name }}"
+                       id="{{ form.nom_client.id_for_label }}"
+                       class="form-control {% if form.nom_client.errors %}error{% endif %}"
+                       value="{{ form.nom_client.value|default:'' }}"
+                       required>
+                {% if form.nom_client.errors %}
+                    <div class="form-error">
+                        {% for error in form.nom_client.errors %}
+                            <p>{{ error }}</p>
                         {% endfor %}
-                    </select>
-                    {% if form.logement.errors %}
-                        <div class="mt-1 text-sm text-red-600">
-                            {% for error in form.logement.errors %}
-                                <p>{{ error }}</p>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                </div>
-                
-                <!-- Champ Date d'arrivée -->
-                <div>
-                    <label for="{{ form.date_arrivee.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
-                        {{ form.date_arrivee.label }}
-                        <span class="text-red-500">*</span>
-                    </label>
-                    <input type="date"
-                           name="{{ form.date_arrivee.name }}"
-                           id="{{ form.date_arrivee.id_for_label }}"
-                           class="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm {% if form.date_arrivee.errors %}border-red-500{% else %}border-gray-300{% endif %}"
-                           value="{{ form.date_arrivee.value|date:'Y-m-d'|default:'' }}"
-                           required>
-                    {% if form.date_arrivee.errors %}
-                        <div class="mt-1 text-sm text-red-600">
-                            {% for error in form.date_arrivee.errors %}
-                                <p>{{ error }}</p>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                </div>
-                
-                <!-- Champ Date de départ -->
-                <div>
-                    <label for="{{ form.date_depart.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
-                        {{ form.date_depart.label }}
-                        <span class="text-red-500">*</span>
-                    </label>
-                    <input type="date"
-                           name="{{ form.date_depart.name }}"
-                           id="{{ form.date_depart.id_for_label }}"
-                           class="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm {% if form.date_depart.errors %}border-red-500{% else %}border-gray-300{% endif %}"
-                           value="{{ form.date_depart.value|date:'Y-m-d'|default:'' }}"
-                           required>
-                    {% if form.date_depart.errors %}
-                        <div class="mt-1 text-sm text-red-600">
-                            {% for error in form.date_depart.errors %}
-                                <p>{{ error }}</p>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                </div>
-                
-                <!-- Champ Nombre de voyageurs -->
-                <div>
-                    <label for="{{ form.nb_voyageurs.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
-                        {{ form.nb_voyageurs.label }}
-                        <span class="text-red-500">*</span>
-                    </label>
-                    <input type="number"
-                           name="{{ form.nb_voyageurs.name }}"
-                           id="{{ form.nb_voyageurs.id_for_label }}"
-                           min="1"
-                           class="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm {% if form.nb_voyageurs.errors %}border-red-500{% else %}border-gray-300{% endif %}"
-                           value="{{ form.nb_voyageurs.value|default:'1' }}"
-                           required>
-                    {% if form.nb_voyageurs.errors %}
-                        <div class="mt-1 text-sm text-red-600">
-                            {% for error in form.nb_voyageurs.errors %}
-                                <p>{{ error }}</p>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                </div>
+                    </div>
+                {% endif %}
             </div>
             
-            <div class="flex justify-between items-center pt-6 border-t border-gray-200">
-                <a href="{% url 'reservations:reservation-list' %}" 
-                   class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                    <i class="fas fa-arrow-left mr-2"></i> Retour à la liste
-                </a>
-                <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                    <i class="fas fa-save mr-2"></i> Enregistrer
-                </button>
+            <!-- Champ Logement -->
+            <div class="form-group full-width">
+                <label for="{{ form.logement.id_for_label }}" class="form-label">
+                    {{ form.logement.label }}
+                    <span class="form-required">*</span>
+                </label>
+                <select name="{{ form.logement.name }}"
+                        id="{{ form.logement.id_for_label }}"
+                        class="form-control select-input {% if form.logement.errors %}error{% endif %}"
+                        required>
+                    <option value="" disabled selected>Sélectionnez un logement</option>
+                    {% for value, label in form.logement.field.choices %}
+                        <option value="{{ value }}" {% if form.logement.value == value|stringformat:'s' %}selected{% endif %}>
+                            {{ label }}
+                        </option>
+                    {% endfor %}
+                </select>
+                {% if form.logement.errors %}
+                    <div class="form-error">
+                        {% for error in form.logement.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
             </div>
-        </form>
-    </div>
+            
+            <!-- Champ Date d'arrivée -->
+            <div class="form-group">
+                <label for="{{ form.date_arrivee.id_for_label }}" class="form-label">
+                    {{ form.date_arrivee.label }}
+                    <span class="form-required">*</span>
+                </label>
+                <input type="date"
+                       name="{{ form.date_arrivee.name }}"
+                       id="{{ form.date_arrivee.id_for_label }}"
+                       class="form-control date-input {% if form.date_arrivee.errors %}error{% endif %}"
+                       value="{{ form.date_arrivee.value|date:'Y-m-d'|default:'' }}"
+                       required>
+                {% if form.date_arrivee.errors %}
+                    <div class="form-error">
+                        {% for error in form.date_arrivee.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            
+            <!-- Champ Date de départ -->
+            <div class="form-group">
+                <label for="{{ form.date_depart.id_for_label }}" class="form-label">
+                    {{ form.date_depart.label }}
+                    <span class="form-required">*</span>
+                </label>
+                <input type="date"
+                       name="{{ form.date_depart.name }}"
+                       id="{{ form.date_depart.id_for_label }}"
+                       class="form-control date-input {% if form.date_depart.errors %}error{% endif %}"
+                       value="{{ form.date_depart.value|date:'Y-m-d'|default:'' }}"
+                       required>
+                {% if form.date_depart.errors %}
+                    <div class="form-error">
+                        {% for error in form.date_depart.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            
+            <!-- Champ Nombre de voyageurs -->
+            <div class="form-group">
+                <label for="{{ form.nb_voyageurs.id_for_label }}" class="form-label">
+                    {{ form.nb_voyageurs.label }}
+                    <span class="form-required">*</span>
+                </label>
+                <input type="number"
+                       name="{{ form.nb_voyageurs.name }}"
+                       id="{{ form.nb_voyageurs.id_for_label }}"
+                       min="1"
+                       class="form-control number-input {% if form.nb_voyageurs.errors %}error{% endif %}"
+                       value="{{ form.nb_voyageurs.value|default:'1' }}"
+                       required>
+                {% if form.nb_voyageurs.errors %}
+                    <div class="form-error">
+                        {% for error in form.nb_voyageurs.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="form-actions">
+            <a href="{% url 'reservations:reservation-list' %}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Retour à la liste
+            </a>
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i> Enregistrer
+            </button>
+        </div>
+    </form>
 </div>
 
 <script>
