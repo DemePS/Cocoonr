@@ -32,7 +32,7 @@ class CreateLogementView(CreateView):
     
     def form_valid(self, form):
         response = super().form_valid(form)
-        messages.success(self.request, 'Le logement a été créé avec succès !')
+        #messages.success(self.request, 'Le logement a été créé avec succès !')
         return response
     
     def get_context_data(self, **kwargs):
@@ -75,7 +75,7 @@ class LogementListCreateView(generics.ListCreateAPIView):
         form = LogementForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Le logement a été ajouté avec succès !')
+            #messages.success(request, 'Le logement a été ajouté avec succès !')
             return redirect('logement-list')
             
         # Si le formulaire n'est pas valide, on réaffiche la liste avec les erreurs
@@ -147,7 +147,7 @@ class ReservationListCreateView(generics.ListCreateAPIView):
         form = ReservationForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, 'La réservation a été enregistrée avec succès !')
+            #messages.success(request, 'La réservation a été enregistrée avec succès !')
             return redirect('reservation-list')
             
         # Si le formulaire n'est pas valide, on réaffiche la liste avec les erreurs
