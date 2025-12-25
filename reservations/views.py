@@ -9,12 +9,6 @@ from .forms import LogementForm, ReservationForm
 class HomeView(TemplateView):
     """Vue pour la page d'accueil du site."""
     template_name = 'reservations/home.html'
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['logements_count'] = Logement.objects.count()
-        context['reservations_count'] = Reservation.objects.count()
-        return context
 
 
 class LogementListView(ListView):
