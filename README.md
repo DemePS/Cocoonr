@@ -2,20 +2,20 @@
 
 Application de gestion de réservations de logements.
 
-## Modèles de Données (fichier reservations/models.py)
+## Modèles de Données 
 
 ### Logement
 Le modèle `Logement` représente un logement disponible à la location avec les champs suivants :
-- `nom` : Nom unique du logement (CharField, max 255 caractères)
-- `capacite` : Nombre maximum de personnes que peut accueillir le logement (PositiveIntegerField)
+- `nom` : Nom unique du logement 
+- `capacite` : Nombre maximum de personnes que peut accueillir le logement 
 
 ### Réservation
 Le modèle `Reservation` représente une réservation de logement avec les champs suivants :
 - `logement` : Clé étrangère vers le modèle Logement (relation plusieurs-à-un)
-- `date_arrivee` : Date d'arrivée du séjour (DateField)
-- `date_depart` : Date de départ (DateField)
-- `nom_client` : Nom du client (CharField, max 255 caractères)
-- `nb_voyageurs` : Nombre de personnes (PositiveIntegerField)
+- `date_arrivee` : Date d'arrivée du séjour 
+- `date_depart` : Date de départ 
+- `nom_client` : Nom du client 
+- `nb_voyageurs` : Nombre de personnes 
 
 ## Installation
 
