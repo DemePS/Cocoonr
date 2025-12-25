@@ -56,15 +56,7 @@ class ReservationCreateView(FormView):
     template_name = 'reservations/reservation_form.html'
     form_class = ReservationForm
     success_url = reverse_lazy('reservations:reservation-list')
-    
-    def get_initial(self):
-        """Initialise le formulaire avec le logement sélectionné si fourni dans l'URL."""
-        initial = super().get_initial()
-        logement_id = self.kwargs.get('logement_id')
-        if logement_id:
-            initial['logement'] = logement_id
-        return initial
-    
+
     def form_valid(self, form):
         """Traitement du formulaire valide."""
         form.save()
