@@ -103,7 +103,7 @@ class CreateReservationView(FormView):
     def form_valid(self, form):
         """Traitement du formulaire valide."""
         form.save()
-        messages.success(self.request, 'La réservation a été créée avec succès !')
+        #messages.success(self.request, 'La réservation a été créée avec succès !')
         return super().form_valid(form)
     
     def get_context_data(self, **kwargs):
